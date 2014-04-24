@@ -29,8 +29,19 @@ func setupDirpath(date *time.Time) (string, error) {
 	return dirpath, err
 }
 
+func getEditCmd() string {
+	var result string
+	if result = os.Getenv("DOUG_EDITOR"); result != "" {
+		return result
+	}
+	if result = os.Getenv("EDITOR"); result != "" {
+		return result
+	}
+	return "vi"
+}
+
 func editFile(filename string) {
-	cmd := exec.Command(os.Getenv("EDITOR"), filename)
+	cmd := exec.Command(getEditCmd(), filename)
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
